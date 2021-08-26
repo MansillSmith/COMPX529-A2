@@ -20,9 +20,11 @@ class HPA:
 		self.setPoint = float(INFOLIST[1])/100
 		self.maxReps = 5
 		self.minReps = 1
+
 	def __call__(self):
 		print('HPA Start')
 		counts = 0
+		
 		while self.running:
 			with self.apiServer.etcdLock:
 				deployment = self.apiServer.GetDepByLabel(self.deploymentLabel)
@@ -33,3 +35,17 @@ class HPA:
 				
 			time.sleep(self.time)
 		print("HPA Shutdown")
+
+	# def __call__(self):
+	# 	print('HPA Start')
+	# 	counts = 0
+	# 	while self.running:
+	# 		with self.apiServer.etcdLock:
+	# 			deployment = self.apiServer.GetDepByLabel(self.deploymentLabel)
+	# 			if deployment == None:
+	# 				self.running = False
+	# 				break
+	# 			#IMPLEMENT SCALING HERE
+				
+	# 		time.sleep(self.time)
+	# 	print("HPA Shutdown")
