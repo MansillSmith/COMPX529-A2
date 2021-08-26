@@ -18,17 +18,49 @@ class Scheduler(threading.Thread):
 			newPending = []
 			with self.apiServer.etcdLock:
 				for pod in self.apiServer.etcd.pendingPodList:
-					for worker in self.apiServer.etcd.nodeList:
-						if worker.status == "UP":
-							#Currently Basic Scheduling. Implement your Utilisation Aware logic here!
-							if worker.available_cpu >= pod.assigned_cpu:
-								pod.status = "RUNNING"
-								worker.available_cpu -= pod.assigned_cpu
-								self.apiServer.CreateEndPoint(pod, worker)
-								self.apiServer.etcd.runningPodList.append(pod)
-								break
+					chosenWorker = self.FindWorkerWithMostAvailableCPU()
+					if chosenWorker != None:
+						pod.status = "RUNNING"
+						chosenWorker.available_cpu -= pod.assigned_cpu
+						self.apiServer.CreateEndPoint(pod, chosenWorker)
+						self.apiServer.etcd.runningPodList.append(pod)
 					if pod.status == "PENDING":
 						newPending.append(pod)
 				self.apiServer.etcd.pendingPodList = newPending
 			time.sleep(self.time)
 		print("SchedShutdown")
+
+	# Returns the worker which is up and has the most available CPU
+	# Returns none if there is no valid worker
+	def FindWorkerWithMostAvailableCPU(self):
+		chosenWorker = None
+
+		for worker in self.apiServer.etcd.nodeList:
+			if worker.status == "UP":
+				# If a worker hasn't been chosen yet, or if it has more available cpu
+				if chosenWorker == None or worker.available_cpu > chosenWorker.available_cpu:
+					chosenWorker = worker
+
+		return chosenWorker
+
+
+	# def __call__(self):
+	# 	print("Scheduler start")
+	# 	while self.running:
+	# 		newPending = []
+	# 		with self.apiServer.etcdLock:
+	# 			for pod in self.apiServer.etcd.pendingPodList:
+	# 				for worker in self.apiServer.etcd.nodeList:
+	# 					if worker.status == "UP":
+	# 						#Currently Basic Scheduling. Implement your Utilisation Aware logic here!
+	# 						if worker.available_cpu >= pod.assigned_cpu:
+	# 							pod.status = "RUNNING"
+	# 							worker.available_cpu -= pod.assigned_cpu
+	# 							self.apiServer.CreateEndPoint(pod, worker)
+	# 							self.apiServer.etcd.runningPodList.append(pod)
+	# 							break
+	# 				if pod.status == "PENDING":
+	# 					newPending.append(pod)
+	# 			self.apiServer.etcd.pendingPodList = newPending
+	# 		time.sleep(self.time)
+	# 	print("SchedShutdown")
