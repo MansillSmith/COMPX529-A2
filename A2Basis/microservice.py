@@ -16,3 +16,7 @@ class Microservice:
 		self.expectedReplicas = 1
 		self.handlingTime = int(INFOLIST[2])
 		self.cpuCost = int(INFOLIST[1])
+
+		###
+		self.RRMemory = []
+		###

@@ -32,6 +32,28 @@ class HPA:
 					self.running = False
 					break
 				#IMPLEMENT SCALING HERE
+				#for each microservice
+				deployment = self.apiServer.GetDepByLabel(self.deploymentLabel)
+				for microserviceLabel in deployment.mslist:
+					#Get average util across pod replicas
+					microservice = self.apiServer.GetMSByLabel(microserviceLabel, self.deployment.deploymentLabel)
+					endpointList = self.apiServer.GetEndPoint(self.deploymentLabel, microserviceLabel)
+					utilSum = 0
+					for endpoint in endpointList:
+						utilSum += (endpoint.pod.assigned_cpu / endpoint.pod.available_cpu)
+					
+					#compare the average utilisation to the set point
+					utilAverage = utilSum / len(endpointList)
+					if utilAverage > self.setPoint:
+						#icnrease the number of expected replicas
+						#between boundaries
+						#Increase + 1 or proportional
+						if microservice.expectedReplicas < self.maxReps:
+							microservice.expectedReplicas += 1
+					elif utilAverage < self.setPoint:
+						if microservice.expectedReplicas > self.minReps:
+							microservice.expectedReplicas -=1
+
 				
 			time.sleep(self.time)
 		print("HPA Shutdown")
