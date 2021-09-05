@@ -46,7 +46,7 @@ hpaThreads = []
 loadBalancerThreads = []
 supervisorThreads = []
 count = 0
-instructions = open("instructions.txt", "r")
+instructions = open("./instructions.txt", "r")
 commands = instructions.readlines()
 for i in range (0,3):
 	deploymentGraphing.append(DeploymentGraphInfo())

@@ -34,10 +34,10 @@ class HPA:
 				#IMPLEMENT SCALING HERE
 				#for each microservice
 				deployment = self.apiServer.GetDepByLabel(self.deploymentLabel)
-				for microserviceLabel in deployment.mslist:
+				for microserviceLabel in deployment.msList:
 					#Get average util across pod replicas
-					microservice = self.apiServer.GetMSByLabel(microserviceLabel, self.deployment.deploymentLabel)
-					endpointList = self.apiServer.GetEndPoint(self.deploymentLabel, microserviceLabel)
+					microservice = self.apiServer.GetMSByLabel(microserviceLabel, self.deploymentLabel)
+					endpointList = self.apiServer.GetEndPointsByLabel(self.deploymentLabel, microserviceLabel)
 					utilSum = 0
 					for endpoint in endpointList:
 						utilSum += (endpoint.pod.assigned_cpu / endpoint.pod.available_cpu)
