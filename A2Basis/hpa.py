@@ -20,6 +20,7 @@ class HPA:
 		self.setPoint = float(INFOLIST[1])/100
 		self.maxReps = 5
 		self.minReps = 1
+		self.percentDifferentFromSetPoint = 10
 
 	def __call__(self):
 		print('HPA Start')
@@ -47,15 +48,17 @@ class HPA:
 						
 						#compare the average utilisation to the set point
 						utilAverage = utilSum / len(endpointList)
-						if utilAverage > self.setPoint:
-							#icnrease the number of expected replicas
-							#between boundaries
-							#Increase + 1 or proportional
-							if microservice.expectedReplicas < self.maxReps:
-								microservice.expectedReplicas += 1
-						elif utilAverage < self.setPoint:
-							if microservice.expectedReplicas > self.minReps:
-								microservice.expectedReplicas -=1
+						percentDiff = (utilAverage - self.setPoint) / utilAverage
+						if percentDiff >= self.percentDifferentFromSetPoint:
+							if utilAverage > self.setPoint:
+								#icnrease the number of expected replicas
+								#between boundaries
+								#Increase + 1 or proportional
+								if microservice.expectedReplicas < self.maxReps:
+									microservice.expectedReplicas += 1
+							elif utilAverage < self.setPoint:
+								if microservice.expectedReplicas > self.minReps:
+									microservice.expectedReplicas -=1
 
 				
 			time.sleep(self.time)
