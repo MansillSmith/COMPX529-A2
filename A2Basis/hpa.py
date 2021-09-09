@@ -38,21 +38,24 @@ class HPA:
 					#Get average util across pod replicas
 					microservice = self.apiServer.GetMSByLabel(microserviceLabel, self.deploymentLabel)
 					endpointList = self.apiServer.GetEndPointsByLabel(self.deploymentLabel, microserviceLabel)
-					utilSum = 0
-					for endpoint in endpointList:
-						utilSum += (endpoint.pod.available_cpu / endpoint.pod.assigned_cpu)
-					
-					#compare the average utilisation to the set point
-					utilAverage = utilSum / len(endpointList)
-					if utilAverage > self.setPoint:
-						#icnrease the number of expected replicas
-						#between boundaries
-						#Increase + 1 or proportional
-						if microservice.expectedReplicas < self.maxReps:
-							microservice.expectedReplicas += 1
-					elif utilAverage < self.setPoint:
-						if microservice.expectedReplicas > self.minReps:
-							microservice.expectedReplicas -=1
+
+					# If there are endpoints
+					if len(endpointList) > 0:
+						utilSum = 0
+						for endpoint in endpointList:
+							utilSum += 1 - (endpoint.pod.available_cpu / endpoint.pod.assigned_cpu)
+						
+						#compare the average utilisation to the set point
+						utilAverage = utilSum / len(endpointList)
+						if utilAverage > self.setPoint:
+							#icnrease the number of expected replicas
+							#between boundaries
+							#Increase + 1 or proportional
+							if microservice.expectedReplicas < self.maxReps:
+								microservice.expectedReplicas += 1
+						elif utilAverage < self.setPoint:
+							if microservice.expectedReplicas > self.minReps:
+								microservice.expectedReplicas -=1
 
 				
 			time.sleep(self.time)
