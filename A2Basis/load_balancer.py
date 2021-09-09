@@ -57,12 +57,12 @@ class LoadBalancer:
 				# for microserviceLabel in self.deployment.mslist:
 					#microservice = self.apiServer.GetMSByLabel(microserviceLabel, self.deployment.deploymentLabel)
 					#get every end point for the microservice
-				endpointList = self.apiServer.GetEndPoint(self.deployment.deploymentLabel, MS)
+				endpointList = self.apiServer.GetEndPointsByLabel(self.deployment.deploymentLabel, MS)
 				#get the current cpu util of each pod
 				#find the lowest util
 				lowestUtilPod = None
 				for endpoint in endpointList:
-					if lowestUtilPod is None or (endpoint.pod.assigned_cpu / endpoint.pod.available_cpu) < (lowestUtilPod.assigned_cpu / lowestUtilPod.available_cpu):
+					if lowestUtilPod is None or (endpoint.pod.available_cpu / endpoint.pod.assigned_cpu) < (lowestUtilPod.available_cpu / lowestUtilPod.assigned_cpu):
 						lowestUtilPod = endpoint.pod
 
 				#handle request on that pod

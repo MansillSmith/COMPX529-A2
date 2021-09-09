@@ -40,7 +40,7 @@ class HPA:
 					endpointList = self.apiServer.GetEndPointsByLabel(self.deploymentLabel, microserviceLabel)
 					utilSum = 0
 					for endpoint in endpointList:
-						utilSum += (endpoint.pod.assigned_cpu / endpoint.pod.available_cpu)
+						utilSum += (endpoint.pod.available_cpu / endpoint.pod.assigned_cpu)
 					
 					#compare the average utilisation to the set point
 					utilAverage = utilSum / len(endpointList)

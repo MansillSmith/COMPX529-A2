@@ -25,10 +25,13 @@ Deploy Deployment_AB (Microservice_C+Microservice_B+Microservice_A)
 Sleep 1
 CreateMS Microservice_D 3 145
 Sleep 1
+ReqIn 15 Deployment_AB
 Sleep 1
+ReqIn 16 Deployment_AA
 Sleep 1
 Deploy Deployment_AC (Microservice_A.Microservice_B)+(Microservice_C+Microservice_D)
 Sleep 1
+ReqIn 18 Deployment_AB
 Sleep 1
 CreateHPA Deployment_AB 76
 Sleep 1
@@ -36,6 +39,7 @@ CreateHPA Deployment_AC 82
 Sleep 1
 AddNode Node_8 20
 Sleep 1
+ReqIn 22 Deployment_AC
 Sleep 1
 CreateMS Microservice_E 2 323
 Sleep 1
@@ -43,19 +47,24 @@ CreateMS Microservice_F 3 486
 Sleep 1
 CrashPod Deployment_AA
 Sleep 1
+ReqIn 26 Deployment_AA
+ReqIn 26 Deployment_AB
 Sleep 1
 Sleep 1
 ReqIn 28 Deployment_AB
 ReqIn 28 Deployment_AC
 Sleep 1
+ReqIn 29 Deployment_AA
 Sleep 1
-ReqIn 30 Deployment_AA
+ReqIn 30 Deployment_AB
 Sleep 1
 ReqIn 31 Deployment_AC
 Sleep 1
+ReqIn 32 Deployment_AA
 ReqIn 32 Deployment_AB
 Sleep 1
 Sleep 1
+ReqIn 34 Deployment_AB
 ReqIn 34 Deployment_AC
 Sleep 1
 ReqIn 35 Deployment_AA
@@ -64,24 +73,29 @@ ReqIn 36 Deployment_AB
 Sleep 1
 ReqIn 37 Deployment_AC
 Sleep 1
+ReqIn 38 Deployment_AA
+ReqIn 38 Deployment_AB
 Sleep 1
 Sleep 1
-ReqIn 40 Deployment_AA
 ReqIn 40 Deployment_AB
 ReqIn 40 Deployment_AC
 Sleep 1
+ReqIn 41 Deployment_AA
 Sleep 1
 CrashPod Deployment_AA
 Sleep 1
+ReqIn 43 Deployment_AB
 Sleep 1
 ReqIn 44 Deployment_AC
 Sleep 1
+ReqIn 45 Deployment_AA
 ReqIn 45 Deployment_AB
 Sleep 1
-ReqIn 46 Deployment_AA
 Sleep 1
+ReqIn 47 Deployment_AB
 ReqIn 47 Deployment_AC
 Sleep 1
+ReqIn 48 Deployment_AA
 Sleep 1
 ReqIn 49 Deployment_AB
 Sleep 1
@@ -93,6 +107,8 @@ CrashPod Deployment_AA
 Sleep 1
 ReqIn 53 Deployment_AC
 Sleep 1
+ReqIn 54 Deployment_AA
+ReqIn 54 Deployment_AB
 Sleep 1
 Sleep 1
 CrashPod Deployment_AB
@@ -102,8 +118,9 @@ Sleep 1
 ReqIn 58 Deployment_AB
 ReqIn 58 Deployment_AC
 Sleep 1
+ReqIn 59 Deployment_AA
 Sleep 1
-ReqIn 60 Deployment_AA
+ReqIn 60 Deployment_AB
 Sleep 1
 CrashPod Deployment_AB
 Sleep 1
@@ -115,62 +132,63 @@ CrashPod Deployment_AA
 Sleep 1
 ReqIn 65 Deployment_AC
 Sleep 1
+ReqIn 66 Deployment_AA
+ReqIn 66 Deployment_AB
 Sleep 1
-ReqIn 67 Deployment_AA
 Sleep 1
 ReqIn 68 Deployment_AB
 ReqIn 68 Deployment_AC
 Sleep 1
+ReqIn 69 Deployment_AA
 Sleep 1
-ReqIn 70 Deployment_AA
 ReqIn 70 Deployment_AB
 Sleep 1
+ReqIn 71 Deployment_AC
 Sleep 1
+ReqIn 72 Deployment_AA
 ReqIn 72 Deployment_AB
 Sleep 1
-ReqIn 73 Deployment_AA
-ReqIn 73 Deployment_AC
 Sleep 1
 CrashPod Deployment_AB
 Sleep 1
 ReqIn 75 Deployment_AB
+ReqIn 75 Deployment_AC
 Sleep 1
-ReqIn 76 Deployment_AC
+ReqIn 76 Deployment_AA
 Sleep 1
-ReqIn 77 Deployment_AA
 ReqIn 77 Deployment_AB
 Sleep 1
 ReqIn 78 Deployment_AC
 Sleep 1
+ReqIn 79 Deployment_AA
 ReqIn 79 Deployment_AB
 Sleep 1
-ReqIn 80 Deployment_AA
-ReqIn 80 Deployment_AC
 Sleep 1
 ReqIn 81 Deployment_AB
+ReqIn 81 Deployment_AC
 Sleep 1
 CrashPod Deployment_AB
 Sleep 1
-ReqIn 83 Deployment_AC
+ReqIn 83 Deployment_AA
 Sleep 1
-ReqIn 84 Deployment_AA
 ReqIn 84 Deployment_AB
 Sleep 1
 ReqIn 85 Deployment_AC
 Sleep 1
+ReqIn 86 Deployment_AA
 ReqIn 86 Deployment_AB
 Sleep 1
-ReqIn 87 Deployment_AA
-ReqIn 87 Deployment_AC
 Sleep 1
 ReqIn 88 Deployment_AB
+ReqIn 88 Deployment_AC
 Sleep 1
-ReqIn 89 Deployment_AC
+ReqIn 89 Deployment_AA
 Sleep 1
 ReqIn 90 Deployment_AB
 Sleep 1
 ReqIn 91 Deployment_AC
 Sleep 1
+ReqIn 92 Deployment_AA
 ReqIn 92 Deployment_AB
 Sleep 1
 Sleep 1
@@ -179,15 +197,16 @@ Sleep 1
 ReqIn 95 Deployment_AB
 ReqIn 95 Deployment_AC
 Sleep 1
+ReqIn 96 Deployment_AA
 Sleep 1
-ReqIn 97 Deployment_AA
-ReqIn 97 Deployment_AC
+ReqIn 97 Deployment_AB
 Sleep 1
 CrashPod Deployment_AA
 Sleep 1
+ReqIn 99 Deployment_AC
 Sleep 1
+ReqIn 100 Deployment_AA
 ReqIn 100 Deployment_AB
-ReqIn 100 Deployment_AC
 Sleep 1
 DeleteDeployment Deployment_AA
 DeleteDeployment Deployment_AB

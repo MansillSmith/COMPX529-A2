@@ -20,7 +20,7 @@ _depCtlLoop = 1
 _scheduleCtlLoop =1
 _hpaCtlLoop = 2
 
-kind = ''
+kind = 'UA'
 apiServer = APIServer()
 depController = DepController(apiServer, _depCtlLoop)
 nodeController = NodeController(apiServer, _nodeCtlLoop)
