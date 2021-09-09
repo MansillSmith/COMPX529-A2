@@ -20,7 +20,7 @@ class DepController:
 					while microservice.currentReplicas < microservice.expectedReplicas:
 						self.apiServer.CreatePod(microservice)
 						microservice.currentReplicas +=1
-					endPoints = self.apiServer.GetEndPointsByLabel(microservice.deploymentLabel, microservice.microserviceLabe)
+					endPoints = self.apiServer.GetEndPointsByLabel(microservice.deploymentLabel, microservice.microserviceLabel)
 					#Remove any pending pods before terminating running ones
 					for pod in self.apiServer.etcd.pendingPodList:
 						if pod.microserviceLabel == microservice.microserviceLabel:
