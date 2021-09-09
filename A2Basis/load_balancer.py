@@ -46,46 +46,50 @@ class LoadBalancer:
 
 	def balance(self, request, MS):
 		with self.apiServer.etcdLock:
-			if self.kind == 'UA':
-				#IMPLEMENT BALANCING HERE
-				#utilisation aware
-				#look at all the active pod replicas
-				#util = number of threads being used / thread pool
-				#keeps utilisation consistent accross pods
+			endpointList = self.apiServer.GetEndPointsByLabel(self.deployment.deploymentLabel, MS)
+			if len(endpointList) > 0:
+				if self.kind == 'UA':
+					#IMPLEMENT BALANCING HERE
+					#utilisation aware
+					#look at all the active pod replicas
+					#util = number of threads being used / thread pool
+					#keeps utilisation consistent accross pods
 
-				#Get all the microservice associated with this deployment
-				# for microserviceLabel in self.deployment.mslist:
-					#microservice = self.apiServer.GetMSByLabel(microserviceLabel, self.deployment.deploymentLabel)
-					#get every end point for the microservice
-				endpointList = self.apiServer.GetEndPointsByLabel(self.deployment.deploymentLabel, MS)
-				#get the current cpu util of each pod
-				#find the lowest util
-				lowestUtilPod = None
-				for endpoint in endpointList:
-					if lowestUtilPod is None or (endpoint.pod.available_cpu / endpoint.pod.assigned_cpu) < (lowestUtilPod.available_cpu / lowestUtilPod.assigned_cpu):
-						lowestUtilPod = endpoint.pod
+					#Get all the microservice associated with this deployment
+					# for microserviceLabel in self.deployment.mslist:
+						#microservice = self.apiServer.GetMSByLabel(microserviceLabel, self.deployment.deploymentLabel)
+						#get every end point for the microservice
+					# endpointList = self.apiServer.GetEndPointsByLabel(self.deployment.deploymentLabel, MS)
+					# if len(endpointList) > 0:
+					#get the current cpu util of each pod
+					#find the lowest util
+					lowestUtilPod = None
+					for endpoint in endpointList:
+						if lowestUtilPod is None or (endpoint.pod.available_cpu / endpoint.pod.assigned_cpu) < (lowestUtilPod.available_cpu / lowestUtilPod.assigned_cpu):
+							lowestUtilPod = endpoint.pod
 
-				#handle request on that pod
-				lowestUtilPod.HandleRequest(request)
-			if self.kind == 'RR':
-				# If there were three pods
-				# req 1 -> 1, req 2 -> 2, req 3 -> 3, req 4 -> 1 ...
-				# for microservicelabel in self.deployment.mslist:
-				microservice = self.apiServer.GetMSByLabel(MS, self.deployment.deploymentLabel)
-				endpointList = self.apiServer.GetEndPoint(self.deployment.deploymentLabel, MS)
+					#handle request on that pod
+					lowestUtilPod.HandleRequest(request)
+				if self.kind == 'RR':
+					# If there were three pods
+					# req 1 -> 1, req 2 -> 2, req 3 -> 3, req 4 -> 1 ...
+					# for microservicelabel in self.deployment.mslist:
+					microservice = self.apiServer.GetMSByLabel(MS, self.deployment.deploymentLabel)
+					# endpointList = self.apiServer.GetEndPoint(self.deployment.deploymentLabel, MS)
 
-				chosenPod = None
-				for endpoint in endpointList:
-					if endpoint.pod.podName not in microservice.RRMemory:
-						chosenPod = endpoint.pod
-						break
+					# if len(endpointList) > 0:
+					chosenPod = None
+					for endpoint in endpointList:
+						if endpoint.pod.podName not in microservice.RRMemory:
+							chosenPod = endpoint.pod
+							break
 
-				if len(microservice.RRMemory) == 0 or chosenPod is None:
-					chosenPod = endpointList[0].pod
+					if len(microservice.RRMemory) == 0 or chosenPod is None:
+						chosenPod = endpointList[0].pod
 
-				microservice.RRMemory.append(chosenPod.podName)
+					microservice.RRMemory.append(chosenPod.podName)
 
-				chosenPod.HandleRequest(request)
+					chosenPod.HandleRequest(request)
 			#IMPLEMENT BALANCING HERE
 
 			
