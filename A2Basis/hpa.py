@@ -48,7 +48,12 @@ class HPA:
 						
 						#compare the average utilisation to the set point
 						utilAverage = utilSum / len(endpointList)
-						percentDiff = (utilAverage - self.setPoint) / utilAverage
+						# Ensures that if the util average is 0
+						percentDiff = self.percentDifferentFromSetPoint * 2
+
+						if utilAverage != 0:
+							percentDiff = ((utilAverage - self.setPoint) / utilAverage) * 100
+
 						if percentDiff >= self.percentDifferentFromSetPoint:
 							if utilAverage > self.setPoint:
 								#icnrease the number of expected replicas

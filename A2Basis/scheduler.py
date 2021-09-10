@@ -19,7 +19,7 @@ class Scheduler(threading.Thread):
 			with self.apiServer.etcdLock:
 				for pod in self.apiServer.etcd.pendingPodList:
 					chosenWorker = self.FindWorkerWithMostAvailableCPU()
-					if chosenWorker != None:
+					if chosenWorker != None and chosenWorker.available_cpu >= pod.assigned_cpu:
 						pod.status = "RUNNING"
 						chosenWorker.available_cpu -= pod.assigned_cpu
 						self.apiServer.CreateEndPoint(pod, chosenWorker)
